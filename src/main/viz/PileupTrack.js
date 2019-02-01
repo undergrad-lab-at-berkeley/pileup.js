@@ -85,7 +85,7 @@ function renderPileup(ctx: DataCanvasRenderingContext2D,
   var pxPerLetter = scale(1) - scale(0),
       mode = DisplayMode.getDisplayMode(pxPerLetter),
       showText = DisplayMode.isText(mode);
-
+  ctx.scale(1, 1 / window.devicePixelRatio);
   function drawArrow(pos: number, refLength: number, top: number, direction: 'L' | 'R') {
     var left = scale(pos + 1),
         right = scale(pos + refLength + 1),

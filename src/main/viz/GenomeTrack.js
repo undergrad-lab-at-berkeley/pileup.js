@@ -32,6 +32,9 @@ function renderGenome(ctx: DataCanvasRenderingContext2D,
   var mode = DisplayMode.getDisplayMode(pxPerLetter);
   var showText = DisplayMode.isText(mode);
 
+  //console.log(mode);
+  //alert(scale);
+
   if (mode != DisplayMode.HIDDEN) {
     ctx.textAlign = 'center';
     if (mode == DisplayMode.LOOSE) {
@@ -39,6 +42,7 @@ function renderGenome(ctx: DataCanvasRenderingContext2D,
     } else if (mode == DisplayMode.TIGHT) {
       ctx.font = style.TIGHT_TEXT_STYLE;
     }
+    //ctx.font = '20px \'Helvetica Neue\', Helvetica, Arial, sans-serif';
 
     var previousBase = null;
     var start = range.start(),
@@ -50,10 +54,12 @@ function renderGenome(ctx: DataCanvasRenderingContext2D,
       ctx.save();
       ctx.pushObject({pos, letter});
       ctx.fillStyle = style.BASE_COLORS[letter];
+      ctx.scale(1, 1 / window.devicePixelRatio);
       if (showText) {
         // We only push objects in the text case as it involves creating a
         // new object & can become a performance issue.
-        // 0.5 = centered
+        // 0.5 = centered // height - 1
+        //ctx.fillRect(scale(1 + pos) - 0.5, 0,  pxPerLetter + 1.5, height);
         ctx.fillText(letter, scale(1 + 0.5 + pos), height - 1);
       } else {
         if (pxPerLetter >= style.COVERAGE_MIN_BAR_WIDTH_FOR_GAP) {
@@ -99,6 +105,7 @@ class GenomeTiledCanvas extends TiledCanvas {
       stop: range.stop() + 1
     };
     var basePairs = this.source.getRangeAsString(genomeRange);
+    //console.log(this.height);
     renderGenome(ctx, scale, this.height, ContigInterval.fromGenomeRange(genomeRange), basePairs);
   }
 

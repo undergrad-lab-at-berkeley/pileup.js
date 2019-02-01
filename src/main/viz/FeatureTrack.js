@@ -59,8 +59,8 @@ class FeatureTiledCanvas extends TiledCanvas {
     // get features and put in cache
     var features = this.source.getFeaturesInRange(relaxedRange, resolution);
     features.forEach(f => this.cache.addFeature(new GenericFeature(f.id, f.position, f)));
-    
-    // get visual features with assigned rows    
+
+    // get visual features with assigned rows
     var vFeatures = this.cache.getGroupsOverlapping(relaxedRange);
     renderFeatures(ctx, scale, relaxedRange, vFeatures);
   }
@@ -74,6 +74,7 @@ function renderFeatures(ctx: DataCanvasRenderingContext2D,
 
     ctx.font = `${style.GENE_FONT_SIZE}px ${style.GENE_FONT}`;
     ctx.textAlign = 'center';
+    //ctx.scale(1, 1 / window.devicePixelRatio);
 
     vFeatures.forEach(vFeature => {
       var feature = vFeature.items[0].gFeature;
@@ -204,17 +205,17 @@ class FeatureTrack extends React.Component<VizProps<FeatureDataSource>, State> {
     // get parent of canvas
     // The typecasts through `any` are to fool flow.
     var parent = ((d3utils.findParent(canvas, "features") : any) : HTMLCanvasElement);
-    
+
     // Height can only be computed after the pileup has been updated.
     var height = yForRow(this.cache.pileupHeightForRef(this.props.range.contig));
 
     // resize height for device
-    height = d3utils.heightForCanvas(canvas, height);
+    //height = d3utils.heightForCanvas(canvas, height);
 
     // set height for parent div to include all features
     if (parent) parent.style.height = `${height}px`;
 
-    d3utils.sizeCanvas(canvas, width, height);  
+    d3utils.sizeCanvas(canvas, width, height);
 
     this.tiles.renderToScreen(ctx, range, this.getScale());
   }

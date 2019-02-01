@@ -82,6 +82,7 @@ function renderBars(ctx: DataCanvasRenderingContext2D,
                     bins: {[key: number]: BinSummary},
                     options: Object) {
   if (_.isEmpty(bins)) return;
+  ctx.scale(1, 1 / window.devicePixelRatio);
 
   var barWidth = xScale(1) - xScale(0);
   var showPadding = (barWidth > style.COVERAGE_MIN_BAR_WIDTH_FOR_GAP);
@@ -174,7 +175,7 @@ class CoverageTrack extends React.Component<VizProps<AlignmentDataSource>, State
   cache: CoverageCache;
   tiles: CoverageTiledCanvas;
   static defaultOptions: Object;
-  
+
   constructor(props: VizProps<AlignmentDataSource>) {
     super(props);
   }

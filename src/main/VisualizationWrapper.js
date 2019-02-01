@@ -32,8 +32,8 @@ type Props = {
 };
 
 type State = {
-  width: number; 
-  height: number; 
+  width: number;
+  height: number;
   updateSize: boolean;
 };
 
@@ -56,7 +56,8 @@ class VisualizationWrapper extends React.Component<Props, State> {
   updateSize(): any {
     var thisNode = ReactDOM.findDOMNode(this)
     if (thisNode && thisNode instanceof Element) { // check for getContext
-      var parentDiv = thisNode.parentNode;  
+      var parentDiv = thisNode.parentNode;
+      //console.log(parentDiv.offsetHeight);
       if (parentDiv && parentDiv instanceof HTMLElement) { // check for getContext
         this.setState({
           updateSize: false,
