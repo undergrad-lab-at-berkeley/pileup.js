@@ -24,6 +24,7 @@ class Controls extends React.Component<Props> {
 
   constructor(props: Object) {
     super(props);
+    this.state = {prev_slider:10};
   }
 
   makeRange(): GenomeRange {
@@ -63,6 +64,10 @@ class Controls extends React.Component<Props> {
     this.props.onChange(range);
   }
 
+  handleOnInput(){
+    this.zoomByFactor(2**(this.state.prev_slider-this.refs.slider.value));
+    this.setState({prev_slider:this.refs.slider.value})
+  }
   // Sets the values of the input elements to match `props.range`.
   updateRangeUI() {
     const r = this.props.range;
@@ -79,11 +84,18 @@ class Controls extends React.Component<Props> {
   zoomIn(e: any) {
     e.preventDefault();
     this.zoomByFactor(0.5);
+    if (this.state.prev_slider>=2){
+      this.setState({prev_state:this.state.prev_state-1});
+    }
+
   }
 
   zoomOut(e: any) {
     e.preventDefault();
     this.zoomByFactor(2.0);
+    if (this.state.prev_slider<=20){
+      this.setState({prev_state:this.state.prev_state+1});
+    }
   }
 
   zoomByFactor(factor: number) {
@@ -114,6 +126,7 @@ class Controls extends React.Component<Props> {
         <div className='zoom-controls'>
           <button className='btn-zoom-out' onClick={this.zoomOut.bind(this)}></button>{' '}
           <button className='btn-zoom-in' onClick={this.zoomIn.bind(this)}></button>
+          <input ref = 'slider' type="range" min="2" max="20" onChange={this.handleOnInput.bind(this)} class="slider" id="myRange"></input>
         </div>
       </form>
     );

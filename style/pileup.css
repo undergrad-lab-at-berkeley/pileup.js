@@ -73,6 +73,12 @@
 .pileup-root > .controls .btn-zoom-out:before {
   content: '-';
 }
+
+.pileup-root > .controls .slider:before {
+  content: '=';
+}
+
+
 .pileup-root > .controls .btn-zoom-in:before {
   content: '+';
 }
