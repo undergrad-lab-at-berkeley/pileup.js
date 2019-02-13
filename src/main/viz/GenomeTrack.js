@@ -40,8 +40,8 @@ function renderGenome(ctx: DataCanvasRenderingContext2D,
     } else if (mode == DisplayMode.TIGHT) {
       //ctx.font = style.TIGHT_TEXT_STYLE;
     }
-    console.log("pxPerLetter is", pxPerLetter);
-    console.log("font size will be", pxPerLetter*10/window.screen.width);
+    //console.log("pxPerLetter is", pxPerLetter);
+    //console.log("font size will be", pxPerLetter*10/window.screen.width);
     ctx.font = String(Math.min(pxPerLetter, 12)) + "px" + ` 'Helvetica Neue', Helvetica, Arial, sans-serif`;
     //console.log("font loose is ", style.LOOSE_TEXT_STYLE);
     //console.log("font tight is ", style.TIGHT_TEXT_STYLE)
@@ -60,7 +60,7 @@ function renderGenome(ctx: DataCanvasRenderingContext2D,
         // We only push objects in the text case as it involves creating a
         // new object & can become a performance issue.
         // 0.5 = centered
-        console.log("font size is ", ctx.font);
+        //console.log("font size is ", ctx.font);
         ctx.fillText(letter, scale(1 + 0.5 + pos), height - 10);
       } else {
         if (pxPerLetter >= style.COVERAGE_MIN_BAR_WIDTH_FOR_GAP) {

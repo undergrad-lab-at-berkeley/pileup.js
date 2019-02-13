@@ -24,7 +24,7 @@ class Controls extends React.Component<Props> {
 
   constructor(props: Object) {
     super(props);
-    this.state = {prev_slider:10};
+    this.state = {defaultHalfInterval:2};
   }
 
   makeRange(): GenomeRange {
@@ -64,9 +64,10 @@ class Controls extends React.Component<Props> {
     this.props.onChange(range);
   }
 
-  handleOnInput(){
-    this.zoomByFactor(2**(this.state.prev_slider-this.refs.slider.value));
-    this.setState({prev_slider:this.refs.slider.value})
+  handleSliderOnInput(){
+    // value is a string, want valueAsNumber
+    // slider has negative values to reverse its direction so we need to negate
+    this.zoomAbs(-this.refs.slider.valueAsNumber);
   }
   // Sets the values of the input elements to match `props.range`.
   updateRangeUI() {
@@ -84,18 +85,24 @@ class Controls extends React.Component<Props> {
   zoomIn(e: any) {
     e.preventDefault();
     this.zoomByFactor(0.5);
-    if (this.state.prev_slider>=2){
-      this.setState({prev_state:this.state.prev_state-1});
-    }
-
   }
 
   zoomOut(e: any) {
     e.preventDefault();
     this.zoomByFactor(2.0);
-    if (this.state.prev_slider<=20){
-      this.setState({prev_state:this.state.prev_state+1});
-    }
+    //console.log(-Math.ceil(Math.log2((this.props.range.stop - this.props.range.start) / 2)));
+  }
+
+  zoomAbs(level: number) {
+    var r = this.props.range;
+    if (!r) return;
+
+    var iv = utils.absScaleRange(new Interval(r.start, r.stop), level, this.state.defaultHalfInterval);
+    this.props.onChange({
+      contig: r.contig,
+      start: iv.start,
+      stop: iv.stop
+    });
   }
 
   zoomByFactor(factor: number) {
@@ -108,6 +115,13 @@ class Controls extends React.Component<Props> {
       start: iv.start,
       stop: iv.stop
     });
+    this.updateSlider(iv);
+  }
+
+  updateSlider(newInterval: Interval) {
+    var newSpan = (newInterval.stop - newInterval.start);
+    console.log(newSpan)
+    this.refs.slider.valueAsNumber = Math.ceil(-Math.log2(newSpan) + 1);
   }
 
   render(): any {
@@ -126,7 +140,7 @@ class Controls extends React.Component<Props> {
         <div className='zoom-controls'>
           <button className='btn-zoom-out' onClick={this.zoomOut.bind(this)}></button>{' '}
           <button className='btn-zoom-in' onClick={this.zoomIn.bind(this)}></button>
-          <input ref = 'slider' type="range" min="2" max="20" onChange={this.handleOnInput.bind(this)} class="slider" id="myRange"></input>
+          <input ref = 'slider' type="range" min="-15" max="0" onInput={this.handleSliderOnInput.bind(this)} class="slider" id="zoomRange"></input>
         </div>
       </form>
     );
