@@ -169,6 +169,34 @@ describe('GenomeTrack', function() {
     });
   });
 
+  it('should zoom according to the value of the slider', function(): any {
+    var p = pileup.create(testDiv, {
+      range: {contig: '17', start: 7500725, stop: 7500775},
+      tracks: [
+        {
+          data: referenceSource,
+          viz: pileup.viz.genome(),
+          isReference: true
+        }
+      ]
+    });
+
+    expect(testDiv.querySelectorAll('.zoom-controls')).to.have.length(1);
+    expect(testDiv.querySelectorAll('.zoomRange')).to.have.length(1);
+    var slider = testDiv.querySelectorAll('.zoomRange')[0];
+    var [locationTxt] = getInputs('.controls input[type="text"]');
+
+
+    return waitFor(hasReference, 2000).then(() => {
+      slider.value = 1;
+      ReactTestUtils.Simulate.change(slider);
+      
+    }).delay(70000).then(() => {
+      p.destroy();
+    });
+  });
+
+
   it('should accept user-entered locations', function(): any {
     var p = pileup.create(testDiv, {
       range: {contig: '17', start: 7500725, stop: 7500775},

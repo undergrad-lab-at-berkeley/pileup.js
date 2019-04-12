@@ -140,7 +140,7 @@ class Controls extends React.Component<Props> {
         <div className='zoom-controls'>
           <button className='btn-zoom-out' onClick={this.zoomOut.bind(this)}></button>{' '}
           <button className='btn-zoom-in' onClick={this.zoomIn.bind(this)}></button>
-          <input ref = 'slider' type="range" min="-15" max="0" onInput={this.handleSliderOnInput.bind(this)} class="slider" id="zoomRange"></input>
+          <input className='zoomRange' ref = 'slider' type="range" min="-15" max="0" onInput={this.handleSliderOnInput.bind(this)} class="slider"></input>
         </div>
       </form>
     );
