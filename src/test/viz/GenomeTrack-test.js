@@ -186,12 +186,36 @@ describe('GenomeTrack', function() {
     var slider = testDiv.querySelectorAll('.zoomRange')[0];
     var [locationTxt] = getInputs('.controls input[type="text"]');
 
-
     return waitFor(hasReference, 2000).then(() => {
-      slider.value = 1;
-      ReactTestUtils.Simulate.change(slider);
+      slider.value = -1;
+      ReactTestUtils.Simulate.input(slider);
+    
+    }).delay(50).then(() => {
       
-    }).delay(70000).then(() => {
+      expect(p.getRange()).to.deep.equal({
+        contig: 'chr17',
+        start: 7500748,
+        stop: 7500752
+      });
+      expect(locationTxt.value).to.equal('7,500,748-7,500,752');
+      slider.value = -2;
+      ReactTestUtils.Simulate.input(slider);
+    }).delay(50).then(() => {
+      expect(p.getRange()).to.deep.equal({
+        contig: 'chr17',
+        start: 7500746,
+        stop: 7500754
+      });
+      expect(locationTxt.value).to.equal('7,500,746-7,500,754');
+      slider.value = -5;
+      ReactTestUtils.Simulate.input(slider);
+    }).delay(50).then(() => {
+      expect(p.getRange()).to.deep.equal({
+        contig: 'chr17',
+        start: 7500718,
+        stop: 7500782
+      });
+      expect(locationTxt.value).to.equal('7,500,718-7,500,782');
       p.destroy();
     });
   });
